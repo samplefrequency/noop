@@ -24,6 +24,10 @@ struct LiveView: View {
                        subtitle: "Your strap in real time — heart rate and frames as they arrive.") {
             VStack(alignment: .leading, spacing: NoopMetrics.sectionGap) {
                 connectionRow
+                // Bond-refused guidance, shown right here on Live where people actually connect (it
+                // also appears in Settings). A 5/MG strap still bonded to the WHOOP app refuses pairing
+                // with "Encryption is insufficient" — this tells the user to free it and re-pair.
+                if let hint = live.pairingHint { pairingHintBanner(hint) }
                 heartRateCard
                 statusGrid
                 // Show the strap picker whenever we're not actively streaming, so a user with both a
@@ -106,6 +110,28 @@ struct LiveView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+
+    private func pairingHintBanner(_ hint: String) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(StrandPalette.statusWarning)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 3) {
+                Text("Pairing refused — free the strap from the WHOOP app")
+                    .font(StrandFont.subhead).foregroundStyle(StrandPalette.textPrimary)
+                Text(hint)
+                    .font(StrandFont.footnote).foregroundStyle(StrandPalette.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(12)
+        .background(StrandPalette.surfaceRaised, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous)
+            .strokeBorder(StrandPalette.statusWarning.opacity(0.5), lineWidth: 1))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Pairing help: \(hint)")
     }
 
     // MARK: - Strap picker

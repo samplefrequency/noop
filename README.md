@@ -186,7 +186,28 @@ NOOP is an independent, **experimental** project — capable, but a work in prog
 | Strap | Status |
 |---|---|
 | **WHOOP 4.0** | ✅ The tested, supported path. Live HR, recovery, strain, sleep, history offload — the full experience. |
-| **WHOOP 5.0 / MG** | 🧪 **Live heart rate works** (confirmed on real hardware). Pick "WHOOP 5.0 / MG" before connecting. Deeper 5/MG metrics (recovery, strain, sleep) are still being reverse-engineered; there's an opt-in **Settings → Experimental** toggle for 5/MG owners who want to help map the protocol. |
+| **WHOOP 5.0 / MG** | 🧪 **Live heart rate works** (confirmed on real hardware). Pick "WHOOP 5.0 / MG" before connecting — and see the pairing note below, because you can't just scan for it. Deeper 5/MG metrics (recovery, strain, sleep) are still being reverse-engineered; there's an opt-in **Settings → Experimental** toggle for 5/MG owners who want to help map the protocol. |
+
+> ### Pairing a WHOOP 5.0 / MG — read this first
+>
+> A WHOOP strap holds an encrypted Bluetooth **bond with only one device at a time**, and yours is
+> normally bonded to the **official WHOOP app** on your phone. **You can't just scan for it in NOOP** —
+> if the strap is still bonded to the WHOOP app, NOOP's pairing is refused and the strap log shows
+> *"Encryption is insufficient"* / *"bond refused."* (Live **heart rate** is the exception — it rides the
+> standard Bluetooth heart-rate profile, so it streams without a bond. But pairing — needed for the
+> deeper features — does not.)
+>
+> **To pair properly:**
+> 1. **Close the official WHOOP app** on your phone (fully quit it, or turn that phone's Bluetooth off) so
+>    it isn't holding the bond.
+> 2. **Put the strap in pairing mode** — the LEDs flash blue.
+> 3. In NOOP: **Live → choose "WHOOP 5.0 / MG" → Scan & Connect.** Success looks like
+>    *"CLIENT_HELLO acked — link established"* in the strap log (not *"bond refused"*). It can take a
+>    couple of attempts.
+>
+> Bonding to NOOP may take the strap's bond away from the WHOOP app, so the official app might need to
+> re-pair afterwards. This is the **hardest part of 5/MG support** — if it refuses, you're almost
+> certainly still bonded to the WHOOP app; free the strap and retry.
 
 The app always tells you what's live now versus still building, both in onboarding and on each screen.
 
